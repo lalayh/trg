@@ -11,7 +11,7 @@ assert pybullet.isNumpyEnabled(), "Pybullet needs to be built with NumPy"
 
 
 class BtWorld(object):
-    """Interface to a PyBullet physics server.PyBullet物理服务器的接口
+    """Interface to a PyBullet physics server.
 
     Attributes:
         dt: Time step of the physics simulation.
@@ -22,7 +22,7 @@ class BtWorld(object):
     def __init__(self, gui=True):
         connection_mode = pybullet.GUI if gui else pybullet.DIRECT
         # connection_mode = pybullet.GUI
-        self.p = bullet_client.BulletClient(connection_mode) # 启动物理引擎，后续操作全都基于这个引擎
+        self.p = bullet_client.BulletClient(connection_mode) 
 
         self.gui = gui
         self.dt = 1.0 / 240.0
@@ -31,27 +31,27 @@ class BtWorld(object):
         self.reset()
 
     def set_gravity(self, gravity):
-        self.p.setGravity(*gravity) # 设置重力
+        self.p.setGravity(*gravity) 
 
     def load_urdf(self, urdf_path, pose, scale=1.0):
-        body = Body.from_urdf(self.p, urdf_path, pose, scale) # 加载物理模型的body类实例
-        self.bodies[body.uid] = body # self.bodies是所有物理模型的body类实例，用模型编号索引
+        body = Body.from_urdf(self.p, urdf_path, pose, scale) 
+        self.bodies[body.uid] = body 
         return body
 
-    def remove_body(self, body): # 删除模型类实例
+    def remove_body(self, body): 
         self.p.removeBody(body.uid)
         del self.bodies[body.uid]
 
-    def add_constraint(self, *argv, **kwargs): # 创建约束p.createConstraint
+    def add_constraint(self, *argv, **kwargs): 
         """See `Constraint` below."""
         constraint = Constraint(self.p, *argv, **kwargs)
         return constraint
 
-    def add_camera(self, intrinsic, near, far): # 创建相机和相关图像参数
+    def add_camera(self, intrinsic, near, far): 
         camera = Camera(self.p, intrinsic, near, far)
         return camera
 
-    def get_contacts(self, bodyA): # 在2个主体之间创建连接
+    def get_contacts(self, bodyA): 
         points = self.p.getContactPoints(bodyA.uid)
         contacts = []
         for point in points:
@@ -91,13 +91,13 @@ class BtWorld(object):
 
 
 class Body(object):
-    """Interface to a multibody simulated in PyBullet.PyBullet中模拟的多体接口
+    """Interface to a multibody simulated in PyBullet.
 
     Attributes:
         uid: The unique id of the body within the physics server.
         name: The name of the body.
-        joints: A dict mapping joint names to Joint objects.将关节名称映射到关节对象的字典
-        links: A dict mapping link names to Link objects.将链接名映射到链接对象的字典
+        joints: A dict mapping joint names to Joint objects.
+        links: A dict mapping link names to Link objects.
     """
 
     def __init__(self, physics_client, body_uid, scale):
@@ -156,11 +156,11 @@ class Link(object):
 
 
 class Joint(object):
-    """Interface to a joint simulated in PyBullet.在PyBullet中仿真的关节接口
+    """Interface to a joint simulated in PyBullet.
 
     Attributes:
         joint_index: The index of the joint.
-        lower_limit: Lower position limit of the joint.关节位置下限
+        lower_limit: Lower position limit of the joint.
         upper_limit: Upper position limit of the joint.
         effort: The maximum joint effort.
     """
@@ -192,7 +192,7 @@ class Joint(object):
 
 
 class Constraint(object):
-    """Interface to a constraint in PyBullet.约束接口
+    """Interface to a constraint in PyBullet.
 
     Attributes:
         uid: The unique id of the constraint within the physics server.
@@ -211,7 +211,7 @@ class Constraint(object):
         child_frame,
     ):
         """
-        Create a new constraint between links of bodies.在主体的链接之间创建一个新的约束
+        Create a new constraint between links of bodies.
 
         Args:
             parent:
@@ -243,7 +243,7 @@ class Constraint(object):
 
 
 class Contact(object):
-    """Contact point between two multibodies.两个主体之间的接触点
+    """Contact point between two multibodies.
 
     Attributes:
         point: Contact point.
@@ -262,10 +262,10 @@ class Contact(object):
 
 
 class Camera(object):
-    """Virtual RGB-D camera based on the PyBullet camera interface.基于PyBullet摄像机接口的虚拟RGB-D摄像机
+    """Virtual RGB-D camera based on the PyBullet camera interface.
 
     Attributes:
-        intrinsic: The camera intrinsic parameters.照相机的固有参数
+        intrinsic: The camera intrinsic parameters.
     """
 
     def __init__(self, physics_client, intrinsic, near, far):
@@ -281,7 +281,7 @@ class Camera(object):
         Args:
             extrinsic: Extrinsic parameters, T_cam_ref.
         """
-        # Construct OpenGL compatible view and projection matrices.构建OpenGL兼容的视图和投影矩阵
+        # Construct OpenGL compatible view and projection matrices.
         gl_view_matrix = extrinsic.as_matrix()
         gl_view_matrix[2, :] *= -1  # flip the Z axis
         gl_view_matrix = gl_view_matrix.flatten(order="F")
