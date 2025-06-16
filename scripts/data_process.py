@@ -4,10 +4,6 @@ import numpy as np
 from trg.utils.transform import Rotation
 import argparse
 import os
-#下面的3行上传到github时删掉
-# import sys
-# sys.path.remove("/home/yh/networks/giga/giga/src")
-# sys.path.append("/home/yh/networks/trg/src")
 
 
 def main(args):
