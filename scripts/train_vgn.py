@@ -144,21 +144,21 @@ def main(args):
     checkpoint_handler = ModelCheckpoint(
         logdir,
         "vgn",
-        n_saved=1,  # 最多保存新权重文件个数
+        n_saved=1,  
         require_empty=True,
     )
 
     best_checkpoint_handler = ModelCheckpoint(
         logdir,
         "best_vgn",
-        n_saved=1,  # 最多保存验证集准确度从高到低权重文件个数（相同验证集准确度的只算一个文件）
+        n_saved=1,  
         score_name="val_acc",
         score_function=default_score_fn,
         require_empty=True,
     )
 
     trainer.add_event_handler(
-        Events.EPOCH_COMPLETED(every=1), checkpoint_handler, {args.net: net}  # 每隔一轮保存一次权重
+        Events.EPOCH_COMPLETED(every=1), checkpoint_handler, {args.net: net}  
     )
 
     evaluator.add_event_handler(
