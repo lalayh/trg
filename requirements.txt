@@ -18,3 +18,5 @@ scikit-image
 pykdtree
 pyglet==1.5.15
 rospkg
+opencv-python
+PyOpenGL_accelerate
