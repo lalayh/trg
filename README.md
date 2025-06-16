@@ -16,7 +16,7 @@ Although deep learning models may achieve successful grasps in some instances, t
 * [Self-regulation Encoder Training](#self-regulation-encoder-training)
 * [Simulated Grasping](#simulated-grasping)
 * [Real-world Grasping](#real-world-grasping)
-* [Pre-trained models](#pre-trained-models)
+* [Pre-trained Models](#pre-trained-models)
 * [Related Repositories](#related-repositories)
 
 ## Installation
