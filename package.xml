@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package format="2">
+    <name>trg</name>
+    <version>0.1.2</version>
+    <description>Trustworthy Robotic Grasping.</description>
+
+    <maintainer email="yuh@mail.nankai.edu.cn">Hang Yu</maintainer>
+
+    <license>BSD</license>
+    <url>https://github.com/lalayh/trg</url>
+
+    <buildtool_depend>catkin</buildtool_depend>
+
+    <depend>rospy</depend>
+</package>
