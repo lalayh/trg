@@ -153,7 +153,7 @@ python scripts/panda_grasp.py --model data/models/vgn_conv_pile_se.pt --save_pat
 
 ## Pre-trained Models
 
-Pretrained models are in the [data.zip](https://huggingface.co/lalayh/3DSPGNet/resolve/main/data.zip). They are in `data/models`.
+Pretrained models are in the [data.zip](https://huggingface.co/lalayh/TRG/blob/main/data.zip). They are in `data/models`.
 
 ## Related Repositories
 
