@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<launch>
+    <!-- Parameters -->
+    <arg name="robot_ip" default="172.16.0.2" />
+
+    <!-- Load configuration -->
+    <rosparam command="load" file="$(find trg)/config/panda.yaml" />
+
+    <!-- Launch franka control -->
+    <include file="$(find panda_moveit_config)/launch/franka_control.launch">
+        <arg name="robot_ip" value="$(arg robot_ip)" />
+    </include>
+
+    <!-- Launch camera driver -->
+    <include file="$(find realsense2_camera)/launch/rs_camera.launch">
+        <arg name="enable_pointcloud" value="true" />
+        <arg name="publish_tf" value="false" />
+    </include>
+
+    <!-- Hand-eye calibration -->
+    <node pkg="tf2_ros" type="static_transform_publisher" name="hand_eye_broadcaster" args="0.02429055024025733 -0.07682684181748195 0.01675127265986844 0.00247958 0.00164608 0.36300021 0.9317843 panda_link8 camera_color_optical_frame" />
+
+</launch>

@@ -1,0 +1,15 @@
+panda_grasp:
+  base_frame_id: panda_link0
+  tool0_frame_id: panda_link8
+  T_tool0_tcp: {rotation: [0.000, 0.000, -0.382, 0.924], translation: [0.000, 0.000, 0.10756]}
+  finger_depth: 0.05
+  max_opening_width: 0.08
+  cam:
+    frame_id: camera_color_optical_frame
+    topic_name: /camera/aligned_depth_to_color/image_raw
+    intrinsic:
+      height: 480
+      width: 640
+      K: [605.5932006835938, 0.0, 329.2681884765625, 0.0, 605.4946899414062, 251.92552185058594, 0.0, 0.0, 1.0]
+  scan_joints:
+    - [1.4732642570462142, -0.7402969367964225, -2.5881022330501624, -0.8483367718599925, 0.5249576174418132, 0.8495771108865738, -1.2474098709775805]
