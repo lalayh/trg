@@ -133,14 +133,6 @@ def main(args):
         score = engine.state.metrics['ECE']
         return 1 - score
 
-    # # checkpoint model
-    # checkpoint_handler = ModelCheckpoint(
-    #     logdir,
-    #     "vgn",
-    #     n_saved=1,  # 最多保存新权重文件个数
-    #     require_empty=True,
-    # )
-
     best_checkpoint_handler = ModelCheckpoint(
         logdir,
         "vgn",
@@ -151,7 +143,7 @@ def main(args):
     )
 
     trainer.add_event_handler(
-        Events.EPOCH_COMPLETED(every=1), best_checkpoint_handler, {args.net: scaled_model}  # 每隔一轮保存一次权重
+        Events.EPOCH_COMPLETED(every=1), best_checkpoint_handler, {args.net: scaled_model} 
     )
 
     # run the training loop
