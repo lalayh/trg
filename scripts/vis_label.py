@@ -1,6 +1,3 @@
-# import sys
-# sys.path.remove("/home/yh/networks/giga/giga/src")
-# sys.path.append("/home/yh/networks/trg/src")
 import numpy as np
 import matplotlib.pylab as plt
 
