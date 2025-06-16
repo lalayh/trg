@@ -5,7 +5,7 @@
 IEEE/ASME TRANSACTIONS ON MECHATRONICS (under review) 2025
 
 ## Introduction
-Although deep learning models may achieve successful grasps in some instances, they often struggle to accurately reflect the true likelihood of success for a given grasp. In this paper, we introduce the trustworthy robotic grasping problem, aiming to bridge the gap between predicted grasp probabilities and actual grasp success rates. We propose a novel credibility alignment framework through a two-branch network architecture. This architecture generates an adjusting tensor for non-probabilistic outputs prior to the activation function of the backbone model, which is able to scale the output proportionally to improve the reliability of the predicted probability. To learn the adjusting tensor, a novel self-regulation encoder has been designed, which can extract 3D local features of the scene for the local associative regulation of non-probabilistic outputs. To facilitate research in this area, a new Trustworthy Robotic Grasping dataset has been created. Experimental results reveal that our method not only significantly reduces the expected grasp error, maximum grasp error, and latter half expected grasp error by up to 50% compared to the pre-credibility alignment state, but also enhances both the grasp success rate and declutter rate. Real-world experiments on a Franka Panda robot arm further validates the efficacy of our method.
+Although deep learning models may achieve successful grasps in some instances, they often struggle to accurately reflect the true likelihood of success for a given grasp. In this paper, we introduce the trustworthy robotic grasping problem, aiming to bridge the gap between predicted grasp probabilities and actual grasp success rates. We propose a novel credibility alignment framework through a two-branch network architecture. This architecture generates an adjusting tensor for non-probabilistic outputs prior to the activation function of the backbone model, which is able to scale the output proportionally to improve the reliability of the predicted probability. To learn the adjusting tensor, a novel self-regulation encoder has been designed, which can extract 3D local features of the scene for the local associative regulation of non-probabilistic outputs. To facilitate research in this area, a new Trustworthy Robotic Grasping dataset has been created. Experimental results reveal that our method not only significantly reduces the expected grasp error, maximum grasp error, and latter half expected grasp error by up to 50% compared to the pre-credibility alignment state, but also enhances both the grasp success rate and declutter rate. Real-world experiments on a Franka Panda robot arm further validates the efficacy of our method. our results are shown in `data/picture`.
 
 ![overview](docs/theory.png)
 
@@ -40,7 +40,7 @@ Activate the conda environment.
 conda activate trg
 ```
 
-Install packages list in [requirements.txt](requirements.txt).注意，必须严格按照[requirements.txt](requirements.txt)中的版本安装，否则会由于随机种子问题导致结果不能复现
+Install packages list in [requirements.txt](requirements.txt). Please make sure to install the packages with the exact versions specified in the [requirements.txt](requirements.txt) file, otherwise the results may not be reproducible due to issues caused by random seeds.
 
 ```
 pip install -r requirements.txt -i https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple
