@@ -2,7 +2,7 @@ import enum
 
 
 class Label(enum.IntEnum):
-    FAILURE = 0  # grasp execution failed due to collision or slippage 由于碰撞或滑脱，抓握执行失败
+    FAILURE = 0  # grasp execution failed due to collision or slippage
     SUCCESS = 1  # object was successfully removed
 
 
