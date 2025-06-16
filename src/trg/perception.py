@@ -8,12 +8,12 @@ from trg.utils.transform import Transform
 
 
 class CameraIntrinsic(object):
-    """Intrinsic parameters of a pinhole camera model.针孔相机模型的固有参数
+    """Intrinsic parameters of a pinhole camera model.
 
     Attributes:
-        width (int): The width in pixels of the camera.以像素为单位的相机图像宽度
-        height(int): The height in pixels of the camera.以像素为单位的相机图像高度
-        K: The intrinsic camera matrix.固有相机矩阵
+        width (int): The width in pixels of the camera.
+        height(int): The height in pixels of the camera.
+        K: The intrinsic camera matrix.
     """
 
     def __init__(self, width, height, fx, fy, cx, cy):
@@ -61,7 +61,7 @@ class CameraIntrinsic(object):
 
 
 class TSDFVolume(object):
-    """Integration of multiple depth images using a TSDF.使用TSDF集成多个深度图像"""
+    """Integration of multiple depth images using a TSDF."""
 
     def __init__(self, size, resolution):
         self.size = size
