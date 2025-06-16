@@ -149,6 +149,14 @@ python scripts/panda_grasp.py --model data/models/vgn_conv_packed_se.pt --save_p
 python scripts/panda_grasp.py --model data/models/vgn_conv_pile_se.pt --save_path data/results/pile/pile_0.5_0.6.npy --interval-upper 0.6 --calibration
 ```
 
+## Pre-trained models
+
+Pretrained models are in the [data.zip](https://huggingface.co/lalayh/3DSPGNet/resolve/main/data.zip). They are in `data/models`.
+
+## Related Repositories
+
+1. Our code is largely based on [VGN](https://github.com/ethz-asl/vgn)
+
 ## Citing
 
 ```
