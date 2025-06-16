@@ -1,6 +1,3 @@
-# import sys
-# sys.path.remove("/home/yh/networks/giga/giga/src")
-# sys.path.append("/home/yh/networks/trg/src")
 import argparse
 from pathlib import Path
 from trg.detection import TRG
