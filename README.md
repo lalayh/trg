@@ -1,0 +1,161 @@
+# Trustworthy Robotic Grasping: A Credibility Alignment Framework via Self-regulation Encoding
+
+[Hang Yu](https://rh.nankai.edu.cn/info/1037/1144.htm), [Xuebo Zhang](https://rh.nankai.edu.cn/info/1016/1136.htm), [Zhenjie Zhao](https://rh.nankai.edu.cn/info/1016/1169.htm), [Cheng He](https://rh.nankai.edu.cn/info/1017/1112.htm)
+
+IEEE/ASME TRANSACTIONS ON MECHATRONICS (under review) 2025
+
+## Introduction
+Although deep learning models may achieve successful grasps in some instances, they often struggle to accurately reflect the true likelihood of success for a given grasp. In this paper, we introduce the trustworthy robotic grasping problem, aiming to bridge the gap between predicted grasp probabilities and actual grasp success rates. We propose a novel credibility alignment framework through a two-branch network architecture. This architecture generates an adjusting tensor for non-probabilistic outputs prior to the activation function of the backbone model, which is able to scale the output proportionally to improve the reliability of the predicted probability. To learn the adjusting tensor, a novel self-regulation encoder has been designed, which can extract 3D local features of the scene for the local associative regulation of non-probabilistic outputs. To facilitate research in this area, a new Trustworthy Robotic Grasping dataset has been created. Experimental results reveal that our method not only significantly reduces the expected grasp error, maximum grasp error, and latter half expected grasp error by up to 50% compared to the pre-credibility alignment state, but also enhances both the grasp success rate and declutter rate. Real-world experiments on a Franka Panda robot arm further validates the efficacy of our method.
+
+![overview](docs/theory.png)
+
+
+* [Installation](#installation)
+* [Data Processing](#data-processing)
+* [Backbone Model Training](#backbone-model-training)
+* [Self-regulation Encoder Training](#self-regulation-encoder-training)
+* [Simulated Grasping](#simulated-grasping)
+* [Real-world Grasping](#real-world-grasping)
+
+## Installation
+
+The following instructions were tested with `python3.8` on Ubuntu 20.04.
+
+
+Clone the repository into the `src` folder of a catkin workspace, and source the catkin workspace.
+
+```
+git clone https://github.com/lalayh/trg
+```
+
+Create a conda environment.
+
+```
+conda create -n trg python=3.8
+```
+
+Activate the conda environment.
+
+```
+conda activate trg
+```
+
+Install packages list in [requirements.txt](requirements.txt).注意，必须严格按照[requirements.txt](requirements.txt)中的版本安装，否则会由于随机种子问题导致结果不能复现
+
+```
+pip install -r requirements.txt -i https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple
+```
+
+Go to the root directory and install the project locally using `pip`.
+
+```
+pip install -e .
+```
+
+
+## Data Processing
+
+我们根据[Jiang et al.](https://github.com/UT-Austin-RPL/GIGA)所生成的[packed数据集](https://utexas.box.com/shared/static/h48jfsqq85gt9u5lvb82s5ft6k2hqdcn.zip)和[pile数据集](https://utexas.box.com/shared/static/l3zpzlc1p6mtnu7ashiedasl2m3xrtg2.zip)重新处理生成训练我们的数据集TRG. 将2个下载后的压缩包放置在路径data/datasets下并解压.然后运行
+#### 生成packed场景数据
+```
+python scripts/data_process.py --dataset ./data/datasets/ --scene packed
+```
+
+#### 生成pile场景数据
+```
+python scripts/data_process.py --dataset ./data/datasets/ --scene pile
+```
+
+* 也可以直接在这里下载我们已经生成好的数据集,放置在路径./data下然后解压.
+
+## Backbone Model Training
+#### packed场景训练
+```
+python scripts/train_vgn.py --dataset data/datasets/data_packed_train_processed_dex_noise/
+```
+#### pile场景训练
+```
+python scripts/train_vgn.py --dataset data/datasets/data_pile_train_processed_dex_noise/
+```
+Training and validation metrics are logged to TensorBoard and can be accessed with
+
+```
+tensorboard --logdir data/runs
+```
+
+## Self-regulation Encoder Training
+#### packed场景训练
+```
+python scripts/train_se_vgn.py --dataset data/datasets/data_packed_train_processed_dex_noise/ --model data/models/vgn_conv_packed_retrain.pt
+```
+#### pile场景训练
+```
+python scripts/train_se_vgn.py --dataset data/datasets/data_pile_train_processed_dex_noise/ --model data/models/vgn_conv_pile_retrain.pt
+```
+
+## Simulated Grasping
+
+Run simulated clutter removal experiments.
+
+#### VGN-O(packed)
+```
+python scripts/sim_grasp.py --model data/models/vgn_conv_packed_o.pt --scene packed --object-set packed/test --result-path data/results/packed/packed --force --sideview
+```
+
+#### VGN-O(pile)
+```
+python scripts/sim_grasp.py --model data/models/vgn_conv_pile_o.pt --scene pile --object-set pile/test --result-path data/results/pile/pile --force --sideview
+```
+
+#### SE-VGN(packed)
+```
+python scripts/sim_grasp.py --model data/models/vgn_conv_packed_se.pt --scene packed --object-set packed/test --result-path data/results/packed/packed --force --sideview --calibration
+```
+
+#### SE-VGN(pile)
+```
+python scripts/sim_grasp.py --model data/models/vgn_conv_pile_se.pt --scene pile --object-set pile/test --result-path data/results/pile/pile --force --sideview --calibration
+```
+
+## Real-world Grasping
+
+We use a Franka Panda robotic arm equipped with an Intel RealSense D435 camera to perform grasping. The hardware drivers for the robotic arm can be obtained from the [official Franka website](https://franka.de/). Our computer system is Ubuntu 20.04. Run the MoveIt and trg scripts in the ROS Noetic environment.
+
+First, in the first terminal, launch the robot and camera drivers: 
+
+```
+roslaunch trg panda_grasp.launch
+```
+
+Then, in the second terminal, run
+
+#### VGN-O(packed)
+```
+python scripts/panda_grasp.py --model data/models/vgn_conv_packed_o.pt --save_path data/results/packed/packed_0.5_0.6.npy --interval-upper 0.6
+```
+
+#### VGN-O(pile)
+```
+python scripts/panda_grasp.py --model data/models/vgn_conv_pile_o.pt --save_path data/results/pile/pile_0.5_0.6.npy --interval-upper 0.6
+```
+
+#### SE-VGN(packed)
+```
+python scripts/panda_grasp.py --model data/models/vgn_conv_packed_se.pt --save_path data/results/packed/packed_0.5_0.6.npy --interval-upper 0.6 --calibration
+```
+
+#### SE-VGN(pile)
+```
+python scripts/panda_grasp.py --model data/models/vgn_conv_pile_se.pt --save_path data/results/pile/pile_0.5_0.6.npy --interval-upper 0.6 --calibration
+```
+
+## Citing
+
+```
+@article{TBD,
+ title={Trustworthy Robotic Grasping: A Credibility Alignment Framework via Self-regulation Encoding},
+ author={Hang Yu, Xuebo Zhang, Zhenjie Zhao, Cheng He},
+ journal={IEEE/ASME TRANSACTIONS ON MECHATRONICS(under review)},
+ year={2025},
+}
+```
