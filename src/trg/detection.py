@@ -47,7 +47,7 @@ class TRG(object):
         grasps, scores = np.asarray(grasps), np.asarray(scores)
 
         if len(grasps) > 0:
-            p = np.random.permutation(len(grasps))  # 随机排序
+            p = np.random.permutation(len(grasps))  
             grasps = [from_voxel_coordinates(g, voxel_size) for g in grasps[p]]
             scores = scores[p]
 
@@ -77,7 +77,7 @@ def predict(tsdf_vol, net, device):
     assert tsdf_vol.shape == (1, 40, 40, 40)
 
     # move input to the GPU
-    tsdf_vol = torch.from_numpy(tsdf_vol).unsqueeze(0).to(device)  # tsdf_vol为（1，1，40，40，40）
+    tsdf_vol = torch.from_numpy(tsdf_vol).unsqueeze(0).to(device)  # （1，1，40，40，40）
 
     # forward pass
     with torch.no_grad():
@@ -107,7 +107,7 @@ def process(
 ):
     tsdf_vol = tsdf_vol.squeeze()
 
-    # smooth quality volume with a Gaussian 用高斯平滑质量体素
+    # smooth quality volume with a Gaussian
     qual_vol = ndimage.gaussian_filter(
         qual_vol, sigma=gaussian_filter_sigma, mode="nearest"
     )
@@ -115,7 +115,7 @@ def process(
         before_calibration_vol, sigma=gaussian_filter_sigma, mode="nearest"
     )
 
-    # mask out voxels too far away from the surface 屏蔽离表面太远的体素
+    # mask out voxels too far away from the surface
     outside_voxels = tsdf_vol > 0.5
     inside_voxels = np.logical_and(1e-3 < tsdf_vol, tsdf_vol < 0.5)
     valid_voxels = ndimage.morphology.binary_dilation(
@@ -125,7 +125,7 @@ def process(
     regulatory_factors[valid_voxels == False] = 0.0
     before_calibration_vol[valid_voxels == False] = 0.0
 
-    # reject voxels with predicted widths that are too small or too large 删除预测宽度过小或过大的体素
+    # reject voxels with predicted widths that are too small or too large
     qual_vol[np.logical_or(width_vol < min_width, width_vol > max_width)] = 0.0
     regulatory_factors[np.logical_or(width_vol < min_width, width_vol > max_width)] = 0.0
     before_calibration_vol[np.logical_or(width_vol < min_width, width_vol > max_width)] = 0.0
