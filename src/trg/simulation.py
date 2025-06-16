@@ -24,7 +24,7 @@ class ClutterRemovalSim(object):
         self.sideview = sideview
 
         self.rng = np.random.RandomState(seed) if seed else np.random
-        self.world = btsim.BtWorld(self.gui) # PyBullet物理服务器的接口
+        self.world = btsim.BtWorld(self.gui) 
         self.gripper = Gripper(self.world)
         self.size = 6 * self.gripper.finger_depth
         intrinsic = CameraIntrinsic(640, 480, 540.0, 540.0, 320.0, 240.0)
@@ -34,17 +34,17 @@ class ClutterRemovalSim(object):
     def num_objects(self):
         return max(0, self.world.p.getNumBodies() - 1)  # remove table from body count
 
-    def discover_objects(self): # 找到不同形状的blocks
+    def discover_objects(self): 
         root = self.urdf_root / self.object_set
         self.object_urdfs = [f for f in root.iterdir() if f.suffix == ".urdf"]
 
-    def save_state(self): # 存储状态
+    def save_state(self): 
         self._snapshot_id = self.world.save_state()
 
-    def restore_state(self): # 恢复状态
+    def restore_state(self): 
         self.world.restore_state(self._snapshot_id)
 
-    def reset(self, object_count): # 重置
+    def reset(self, object_count): 
         self.world.reset()
         self.world.set_gravity([0.0, 0.0, -9.81])
         self.draw_workspace()
@@ -67,7 +67,7 @@ class ClutterRemovalSim(object):
         else:
             raise ValueError("Invalid scene argument")
 
-    def draw_workspace(self): # 画工作空间
+    def draw_workspace(self): 
         points = workspace_lines(self.size)
         color = [0.5, 0.5, 0.5]
         for i in range(0, len(points), 2):
@@ -75,19 +75,19 @@ class ClutterRemovalSim(object):
                 lineFromXYZ=points[i], lineToXYZ=points[i + 1], lineColorRGB=color
             )
 
-    def place_table(self, height): # 加载地面
+    def place_table(self, height): 
         urdf = self.urdf_root / "setup" / "plane.urdf"
         pose = Transform(Rotation.identity(), [0.15, 0.15, height])
         self.world.load_urdf(urdf, pose, scale=0.6)
 
-        # define valid volume for sampling grasps 定义抓取采样有效体积
+        # define valid volume for sampling grasps
         lx, ux = 0.02, self.size - 0.02
         ly, uy = 0.02, self.size - 0.02
         lz, uz = height + 0.005, self.size
         self.lower = np.r_[lx, ly, lz]
         self.upper = np.r_[ux, uy, uz]
 
-    def generate_pile_scene(self, object_count, table_height): # 生成一堆随机摆放的场景
+    def generate_pile_scene(self, object_count, table_height): 
         # place box
         urdf = self.urdf_root / "setup" / "box.urdf"
         pose = Transform(Rotation.identity(), np.r_[0.02, 0.02, table_height])
@@ -107,7 +107,7 @@ class ClutterRemovalSim(object):
         self.world.remove_body(box)
         self.remove_and_wait()
 
-    def generate_packed_scene(self, object_count, table_height): # 生成整齐的打包场景
+    def generate_packed_scene(self, object_count, table_height): 
         attempts = 0
         max_attempts = 12
 
@@ -134,12 +134,12 @@ class ClutterRemovalSim(object):
                 self.remove_and_wait()
             attempts += 1
 
-    def acquire_tsdf(self, n, N=None): # 得到tsdf
-        """Render synthetic depth images from n viewpoints and integrate into a TSDF.从n个视点绘制合成深度图像并集成到TSDF中
+    def acquire_tsdf(self, n, N=None): 
+        """Render synthetic depth images from n viewpoints and integrate into a TSDF.
 
-        If N is None, the n viewpoints are equally distributed on circular trajectory.n个视点均匀分布在圆轨迹上
+        If N is None, the n viewpoints are equally distributed on circular trajectory.
 
-        If N is given, the first n viewpoints on a circular trajectory consisting of N points are rendered.绘制由n个点组成的圆形轨迹上的前n个视点
+        If N is given, the first n viewpoints on a circular trajectory consisting of N points are rendered.
         """
         tsdf = TSDFVolume(self.size, 40)
         high_res_tsdf = TSDFVolume(self.size, 120)
@@ -170,7 +170,7 @@ class ClutterRemovalSim(object):
 
         return tsdf, high_res_tsdf.get_cloud(), timing
 
-    def execute_grasp(self, grasp, remove=True, allow_contact=False): # 执行抓取
+    def execute_grasp(self, grasp, remove=True, allow_contact=False): 
         T_world_grasp = grasp.pose
         T_grasp_pregrasp = Transform(Rotation.identity(), [0.0, 0.0, -0.05])
         T_world_pregrasp = T_world_grasp * T_grasp_pregrasp
@@ -178,7 +178,7 @@ class ClutterRemovalSim(object):
         approach = T_world_grasp.rotation.as_matrix()[:, 2]
         angle = np.arccos(np.dot(approach, np.r_[0.0, 0.0, -1.0]))
         if angle > np.pi / 3.0:
-            # side grasp, lift the object after establishing a grasp 侧抓，抓牢后将物体提起
+            # side grasp, lift the object after establishing a grasp 
             T_grasp_pregrasp_world = Transform(Rotation.identity(), [0.0, 0.0, 0.1])
             T_world_retreat = T_grasp_pregrasp_world * T_world_grasp
         else:
@@ -212,7 +212,7 @@ class ClutterRemovalSim(object):
         return result
 
     def remove_and_wait(self):
-        # wait for objects to rest while removing bodies that fell outside the workspace 等待物体静止并删除掉在工作空间之外的物体
+        # wait for objects to rest while removing bodies that fell outside the workspace
         removed_object = True
         while removed_object:
             self.wait_for_objects_to_rest()
@@ -222,17 +222,17 @@ class ClutterRemovalSim(object):
         timeout = self.world.sim_time + timeout
         objects_resting = False
         while not objects_resting and self.world.sim_time < timeout:
-            # simulate a quarter of a second 仿真四分之一秒
+            # simulate a quarter of a second
             for _ in range(60):
                 self.world.step()
-            # check whether all objects are resting 检查所有物体是否处于静止状态
+            # check whether all objects are resting
             objects_resting = True
             for _, body in self.world.bodies.items():
                 if np.linalg.norm(body.get_velocity()) > tol:
                     objects_resting = False
                     break
 
-    def remove_objects_outside_workspace(self): # 删除工作空间之外的物体
+    def remove_objects_outside_workspace(self): 
         removed_object = False
         for body in list(self.world.bodies.values()):
             xyz = body.get_pose().translation
@@ -242,7 +242,7 @@ class ClutterRemovalSim(object):
         return removed_object
 
     def check_success(self, gripper):
-        # check that the fingers are in contact with some object and not fully closed 检查手指是否与某些物体接触，没完全闭合
+        # check that the fingers are in contact with some object and not fully closed
         contacts = self.world.get_contacts(gripper.body)
         res = len(contacts) > 0 and gripper.read() > 0.1 * gripper.max_opening_width
         return res
@@ -263,7 +263,7 @@ class Gripper(object):
     def reset(self, T_world_tcp):
         T_world_body = T_world_tcp * self.T_tcp_body
         self.body = self.world.load_urdf(self.urdf_path, T_world_body)
-        self.body.set_pose(T_world_body)  # sets the position of the COM, not URDF link 设置COM的位置，而不是URDF链接
+        self.body.set_pose(T_world_body)  # sets the position of the COM, not URDF link
         self.constraint = self.world.add_constraint(
             self.body,
             None,
@@ -275,7 +275,7 @@ class Gripper(object):
             T_world_body,
         )
         self.update_tcp_constraint(T_world_tcp)
-        # constraint to keep fingers centered 限制保持手指居中
+        # constraint to keep fingers centered
         self.world.add_constraint(
             self.body,
             self.body.links["panda_leftfinger"],
