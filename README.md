@@ -133,22 +133,22 @@ Then, in the second terminal, run
 
 #### VGN-O(packed)
 ```
-python scripts/panda_grasp.py --model data/models/vgn_conv_packed_o.pt --save_path data/results/packed/packed_0.5_0.6.npy --interval-upper 0.6
+python scripts/panda_grasp.py --model data/models/vgn_conv_packed_o.pt --save-path data/results/packed/packed_0.5_0.6.npy --interval-upper 0.6
 ```
 
 #### VGN-O(pile)
 ```
-python scripts/panda_grasp.py --model data/models/vgn_conv_pile_o.pt --save_path data/results/pile/pile_0.5_0.6.npy --interval-upper 0.6
+python scripts/panda_grasp.py --model data/models/vgn_conv_pile_o.pt --save-path data/results/pile/pile_0.5_0.6.npy --interval-upper 0.6
 ```
 
 #### SE-VGN(packed)
 ```
-python scripts/panda_grasp.py --model data/models/vgn_conv_packed_se.pt --save_path data/results/packed/packed_0.5_0.6.npy --interval-upper 0.6 --calibration
+python scripts/panda_grasp.py --model data/models/vgn_conv_packed_se.pt --save-path data/results/packed/packed_0.5_0.6.npy --interval-upper 0.6 --calibration
 ```
 
 #### SE-VGN(pile)
 ```
-python scripts/panda_grasp.py --model data/models/vgn_conv_pile_se.pt --save_path data/results/pile/pile_0.5_0.6.npy --interval-upper 0.6 --calibration
+python scripts/panda_grasp.py --model data/models/vgn_conv_pile_se.pt --save-path data/results/pile/pile_0.5_0.6.npy --interval-upper 0.6 --calibration
 ```
 
 ## Pre-trained Models
