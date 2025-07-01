@@ -1,6 +1,6 @@
 # Trustworthy Robotic Grasping: A Credibility Alignment Framework via Self-regulation Encoding
 
-[Hang Yu](https://rh.nankai.edu.cn/info/1037/1144.htm), [Xuebo Zhang](https://rh.nankai.edu.cn/info/1016/1136.htm), [Zhenjie Zhao](https://rh.nankai.edu.cn/info/1016/1169.htm), [Cheng He](https://rh.nankai.edu.cn/info/1017/1112.htm)
+[Hang Yu](https://rh.nankai.edu.cn/info/1037/1144.htm), [Xuebo Zhang](https://rh.nankai.edu.cn/info/1016/1136.htm), [Zhenjie Zhao](https://rh.nankai.edu.cn/info/1016/1169.htm), [Cheng He](https://rh.nankai.edu.cn/info/1018/1359.htm)
 
 IEEE/ASME TRANSACTIONS ON MECHATRONICS (under review) 2025
 * The experimental video can be found [here](https://youtu.be/knOrNd3znmY).
