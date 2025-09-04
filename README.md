@@ -2,7 +2,7 @@
 
 [Hang Yu](https://rh.nankai.edu.cn/info/1037/1144.htm), [Xuebo Zhang](https://rh.nankai.edu.cn/info/1016/1136.htm), [Zhenjie Zhao](https://rh.nankai.edu.cn/info/1016/1169.htm), [Cheng He](https://rh.nankai.edu.cn/info/1018/1359.htm)
 
-IEEE/ASME TRANSACTIONS ON MECHATRONICS (Accepted) 2025
+[IEEE/ASME TRANSACTIONS ON MECHATRONICS](http://dx.doi.org/10.1109/tmech.2025.3598989)
 * The experimental video can be found [here](https://youtu.be/knOrNd3znmY).
 
 ## Introduction
@@ -163,10 +163,12 @@ Pretrained models are in the [data.zip](https://huggingface.co/lalayh/TRG/blob/m
 ## Citing
 
 ```
-@article{TBD,
- title={Trustworthy Robotic Grasping: A Credibility Alignment Framework via Self-regulation Encoding},
- author={Hang Yu, Xuebo Zhang, Zhenjie Zhao, Cheng He},
- journal={IEEE/ASME TRANSACTIONS ON MECHATRONICS(Accepted)},
- year={2025},
+@ARTICLE{11150486,
+  author={Yu, Hang and Zhang, Xuebo and Zhao, Zhenjie and He, Cheng},
+  journal={IEEE/ASME Transactions on Mechatronics}, 
+  title={Trustworthy Robotic Grasping: A Credibility Alignment Framework via Self-Regulation Encoding}, 
+  year={2025},
+  pages={1-12},
+  doi={10.1109/TMECH.2025.3598989}
 }
 ```
