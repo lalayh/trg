@@ -172,5 +172,4 @@ Pretrained models are in the [data.zip](https://huggingface.co/lalayh/TRG/blob/m
   number={1},
   pages={884-895}
 }
-
 ```
