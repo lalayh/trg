@@ -167,8 +167,10 @@ Pretrained models are in the [data.zip](https://huggingface.co/lalayh/TRG/blob/m
   author={Yu, Hang and Zhang, Xuebo and Zhao, Zhenjie and He, Cheng},
   journal={IEEE/ASME Transactions on Mechatronics}, 
   title={Trustworthy Robotic Grasping: A Credibility Alignment Framework via Self-Regulation Encoding}, 
-  year={2025},
-  pages={1-12},
-  doi={10.1109/TMECH.2025.3598989}
+  year={2026},
+  volume={31},
+  number={1},
+  pages={884-895}
 }
+
 ```
